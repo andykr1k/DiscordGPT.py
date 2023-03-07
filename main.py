@@ -14,7 +14,7 @@ tree = app_commands.CommandTree(client)
 @tree.command(name = "gpt", description = "Ask ChatGPT Anything!") 
 
 async def first_command(interaction, message: str):
-    await interaction.response.send_message("Hello!" + "The text sent was: " + message, ephemeral = True)
+    await interaction.response.send_message("Hello!" + "\nThe text sent was: " + message, ephemeral = True)
 
 @client.event
 async def on_ready():
