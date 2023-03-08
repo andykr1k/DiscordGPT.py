@@ -7,14 +7,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-@tree.command(name = "gpt", description = "Ask ChatGPT Anything!") 
+@tree.command(name = "gpt", description = "Ask ChatGPT Anything!")
 
 async def first_command(interaction, message: str):
-    await interaction.response.send_message("Hello!" + "\nThe text sent was: " + message, ephemeral = True)
+    response = openai.Completion.create(model="text-davinci-003", prompt=message, temperature=0, max_tokens=7)
+    await interaction.response.send_message("Hello!" + "\nResponse: " + response, ephemeral = True)
 
 @client.event
 async def on_ready():
