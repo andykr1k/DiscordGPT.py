@@ -1,3 +1,4 @@
+import asyncio
 import os
 import openai
 
@@ -16,10 +17,12 @@ tree = app_commands.CommandTree(client)
 @tree.command(name = "gpt", description = "Ask ChatGPT Anything!")
 
 async def first_command(interaction, message: str):
+    await interaction.response.defer()
     response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": message}])
+    await asyncio.sleep(delay=0)
     print("User: \n" + message)
     print("Bot: \n" + response['choices'][0]['message']['content'].strip())
-    await interaction.response.send_message("Prompt: " + message + response['choices'][0]['message']['content'], ephemeral = True)
+    await interaction.followup.send("Prompt: " + message + "\n\n" + response['choices'][0]['message']['content'].strip() + "\n", ephemeral = True)
 
 @client.event
 async def on_ready():
